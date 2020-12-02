@@ -1,15 +1,17 @@
+from settings import Settings
 import pygame
 import sys
 
 from bullet import  Bullet
 from alien import Alien
 
+# ? key binding settings
 
 def check_events(ship,settings,bullets,screen):
     for event in pygame.event.get():
         check_keydown(event,ship,settings,bullets,screen)
         check_keyup(event,ship)
-         
+
 
 
 def check_keydown(event,ship,settings,bullets,screen):
@@ -39,6 +41,8 @@ def check_keyup(event,ship):
                 elif event.key == pygame.K_LEFT:
                     ship.moving_left = False
 
+# ? screen updates
+
 def update_screen(screen,ai_settings,ship,bullets,aliens):
 
     screen.fill(ai_settings.bg_color)
@@ -50,6 +54,8 @@ def update_screen(screen,ai_settings,ship,bullets,aliens):
     pygame.display.flip()
 
 
+# ? firing bullets mechanism
+
 def fire_bullets(bullets):
     for bullet in bullets.sprites():
         bullet.draw_bullet()
@@ -59,8 +65,11 @@ def remove_old_bullets(bullets):
         if bullet.rect.y == 0:
             bullets.remove(bullet)
 
+def update_bullets(bullets):
+    bullets.update()
 
 
+# ? alien fleet creation
 
 def create_fleet(screen,settings,aliens,ship):
 
@@ -96,3 +105,24 @@ def create_alien(screen,settings,alien_width,alien_number,aliens,alien_height,ro
         alien.rect.y = alien_height + (2 * alien_height) * row_number
         aliens.add(alien)
 
+
+
+# ? aliens_movement_mechanism
+
+def check_fleet_edges(aliens,settings):
+
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(aliens,settings)
+            break
+
+def change_fleet_direction(aliens,settings):
+
+    for alien in aliens.sprites():
+        alien.rect.y += settings.fleet_drop_speed
+    settings.fleet_direction *= -1
+
+
+def update_aliens(aliens,settings):
+    check_fleet_edges(aliens,settings)
+    aliens.update()

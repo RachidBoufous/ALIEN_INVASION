@@ -3,7 +3,11 @@ import sys
 
 from settings import Settings
 from ship import Ship
-from game_functions import check_events,update_screen,create_fleet
+from game_functions import (check_events,
+                            update_screen,
+                            create_fleet,
+                            update_bullets,
+                            update_aliens)
 from pygame.sprite import  Group
 
 
@@ -23,7 +27,8 @@ def run_game():
     create_fleet(screen,ai_settings,aliens,ship)
     while True:
         check_events(ship,ai_settings,bullets,screen)
-        bullets.update()
+        update_bullets(bullets)
+        update_aliens(aliens,ai_settings)
         update_screen(screen,ai_settings,ship,bullets,aliens)
 
 run_game() 
