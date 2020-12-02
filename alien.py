@@ -20,9 +20,8 @@ class Alien(Sprite):
 
     
     def check_edges(self):
-        if self.rect.right >=self.screen_rect.right:
-            return True
-        elif self.rect.left <= self.screen_rect.left:
+
+        if self.rect.right >= self.screen_rect.right or self.rect.left <= 0 :
             return True
 
     def update(self):

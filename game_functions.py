@@ -117,11 +117,10 @@ def check_fleet_edges(aliens,settings):
             break
 
 def change_fleet_direction(aliens,settings):
-
     for alien in aliens.sprites():
         alien.rect.y += settings.fleet_drop_speed
+    
     settings.fleet_direction *= -1
-
 
 def update_aliens(aliens,settings):
     check_fleet_edges(aliens,settings)
