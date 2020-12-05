@@ -13,10 +13,16 @@ class Settings():
         self.bg_color = (31,31,31)
 
         # ? player ship settings
-        self.ship_speed_factor = 1.5
+        self.ship_speed_factor = 3
+        self.images = {
+            1 : "images/alien1.png",
+            2 : "images/alien2.png",
+            3 : "images/alien3.png",
+            4 : "images/alien4.png",
+        }
 
         # ? bullets settings
-        self.bullet_speed_factor = 1
+        self.bullet_speed_factor = 2
         self.bullets_allowed = 5
 
         # ? alien fleet/ships settings

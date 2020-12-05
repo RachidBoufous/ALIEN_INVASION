@@ -4,6 +4,7 @@ import sys
 
 from bullet import  Bullet
 from alien import Alien
+from random import randint
 
 # ? key binding settings
 
@@ -61,27 +62,36 @@ def fire_bullets(bullets):
         bullet.draw_bullet()
 
 def remove_old_bullets(bullets):
-     for bullet in bullets.copy():
+    for bullet in bullets.copy():
         if bullet.rect.y == 0:
             bullets.remove(bullet)
+   
 
-def update_bullets(bullets):
+def update_bullets(bullets,aliens):
     bullets.update()
+    collisions = pygame.sprite.groupcollide(bullets,aliens,True,True)
+
 
 
 # ? alien fleet creation
 
 def create_fleet(screen,settings,aliens,ship):
+    image_dict = settings.images
+    image = image_dict[randint(1,4)]
 
     alien = Alien(screen,settings)
     alien_width = alien.rect.width
     alien_height = alien.rect.height
+    
     number_of_aliens = get_number_of_aliens(settings,alien_width)
     number_of_rows = get_number_of_rows(settings,alien_height,ship)
+
     for alien_number in range(number_of_aliens):
+
         for row_number in range(number_of_rows):
+
             create_alien(screen,settings,alien_width,
-                         alien_number,aliens,alien_height,row_number)
+                         alien_number,aliens,alien_height,row_number,image)
 
 
 def get_number_of_aliens(settings,alien_width):
@@ -98,11 +108,12 @@ def get_number_of_rows(settings,alien_height,ship):
     return number_of_rows
 
 
-def create_alien(screen,settings,alien_width,alien_number,aliens,alien_height,row_number):
+def create_alien(screen,settings,alien_width,alien_number,aliens,alien_height,row_number,image):
         alien = Alien(screen,settings)
         alien.x = alien_width + (2 * alien_width) * alien_number
         alien.rect.x = alien.x
         alien.rect.y = alien_height + (2 * alien_height) * row_number
+        alien.image = pygame.image.load(image)
         aliens.add(alien)
 
 

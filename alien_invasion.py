@@ -24,10 +24,12 @@ def run_game():
     bullets = Group()
 
     aliens = Group()
-    create_fleet(screen,ai_settings,aliens,ship)
+    
     while True:
+        if len(aliens) == 0:
+            create_fleet(screen,ai_settings,aliens,ship)
         check_events(ship,ai_settings,bullets,screen)
-        update_bullets(bullets)
+        update_bullets(bullets,aliens)
         update_aliens(aliens,ai_settings)
         update_screen(screen,ai_settings,ship,bullets,aliens)
 
