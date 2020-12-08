@@ -5,32 +5,35 @@ import sys
 from bullet import  Bullet
 from alien import Alien
 from random import randint
+from time import sleep
 
 # ? key binding settings
 
-def check_events(ship,settings,bullets,screen):
+def check_events(ship,settings,bullets,screen,stats):
+
     for event in pygame.event.get():
-        check_keydown(event,ship,settings,bullets,screen)
+        check_keydown(event,ship,settings,bullets,screen,stats)
         check_keyup(event,ship)
 
 
 
-def check_keydown(event,ship,settings,bullets,screen):
+def check_keydown(event,ship,settings,bullets,screen,stats):
     """check for the key down events.
     """
     if event.type == pygame.KEYDOWN:
+            if stats.game_active:
                 if event.key == pygame.K_RIGHT:
-                    ship.moving_right = True
+                     ship.moving_right = True
 
                 elif event.key == pygame.K_LEFT:
                     ship.moving_left = True
 
-                elif event.key == pygame.K_SPACE:
-                    if len(bullets) < settings.bullets_allowed:
-                        new_bullet = Bullet(ship,settings,screen)
-                        bullets.add(new_bullet)
-                elif event.key == pygame.K_q:
-                    sys.exit()
+            if event.key == pygame.K_SPACE:
+                if len(bullets) < settings.bullets_allowed:
+                    new_bullet = Bullet(ship,settings,screen)
+                    bullets.add(new_bullet)
+            elif event.key == pygame.K_q:
+                sys.exit()
 
 def check_keyup(event,ship):
     """check for the key up events
@@ -76,22 +79,23 @@ def update_bullets(bullets,aliens):
 # ? alien fleet creation
 
 def create_fleet(screen,settings,aliens,ship):
-    image_dict = settings.images
-    image = image_dict[randint(1,4)]
+    if len(aliens) == 0:
+        image_dict = settings.images
+        image = image_dict[randint(1,4)]
 
-    alien = Alien(screen,settings)
-    alien_width = alien.rect.width
-    alien_height = alien.rect.height
-    
-    number_of_aliens = get_number_of_aliens(settings,alien_width)
-    number_of_rows = get_number_of_rows(settings,alien_height,ship)
+        alien = Alien(screen,settings)
+        alien_width = alien.rect.width
+        alien_height = alien.rect.height
+        
+        number_of_aliens = get_number_of_aliens(settings,alien_width)
+        number_of_rows = get_number_of_rows(settings,alien_height,ship)
 
-    for alien_number in range(number_of_aliens):
+        for alien_number in range(number_of_aliens):
 
-        for row_number in range(number_of_rows):
+            for row_number in range(number_of_rows):
 
-            create_alien(screen,settings,alien_width,
-                         alien_number,aliens,alien_height,row_number,image)
+                create_alien(screen,settings,alien_width,
+                            alien_number,aliens,alien_height,row_number,image)
 
 
 def get_number_of_aliens(settings,alien_width):
@@ -133,6 +137,34 @@ def change_fleet_direction(aliens,settings):
     
     settings.fleet_direction *= -1
 
-def update_aliens(aliens,settings):
+def update_aliens(aliens,settings,ship, stats,bullets):
     check_fleet_edges(aliens,settings)
     aliens.update()
+
+    if pygame.sprite.spritecollideany(ship,aliens):
+        ship_hit(stats,aliens,bullets,ship)
+    
+    check_alien_bottom_collision(aliens,stats,bullets,ship)
+        
+
+
+def ship_hit(stats,aliens,bullets,ship):
+    if stats.ship_left > 0:
+        stats.ship_left -= 1
+
+        aliens.empty()
+        bullets.empty()
+
+        ship.center_ship()
+
+        sleep(1)
+    else:
+        stats.game_active = False
+
+
+
+def check_alien_bottom_collision(aliens,stats,bullets,ship):
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= ship.screen_rect.bottom:
+            ship_hit(stats,aliens,bullets,ship)
+            break

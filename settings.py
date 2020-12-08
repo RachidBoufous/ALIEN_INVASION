@@ -20,6 +20,7 @@ class Settings():
             3 : "images/alien3.png",
             4 : "images/alien4.png",
         }
+        self.ship_limit = 3
 
         # ? bullets settings
         self.bullet_speed_factor = 2
@@ -28,4 +29,4 @@ class Settings():
         # ? alien fleet/ships settings
         self.alien_speed_factor = 1
         self.fleet_direction = 1
-        self.fleet_drop_speed = 10
+        self.fleet_drop_speed = 50

@@ -45,7 +45,12 @@ class Ship():
              self.x -= self.speed_factor
 
         self.rect.x = self.x
+
     def blitme(self):
         """draw the ship on screen surface
         """
         self.screen.blit(self.image,self.rect)
+
+
+    def center_ship(self):
+        self.rect.centerx = self.screen_rect.centerx

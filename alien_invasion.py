@@ -9,6 +9,7 @@ from game_functions import (check_events,
                             update_bullets,
                             update_aliens)
 from pygame.sprite import  Group
+from game_stats import Game_Stats
 
 
 def run_game():
@@ -24,13 +25,14 @@ def run_game():
     bullets = Group()
 
     aliens = Group()
-    
+    stats = Game_Stats(ai_settings)
+
     while True:
-        if len(aliens) == 0:
+        check_events(ship,ai_settings,bullets,screen,stats)
+        if stats.game_active:
             create_fleet(screen,ai_settings,aliens,ship)
-        check_events(ship,ai_settings,bullets,screen)
-        update_bullets(bullets,aliens)
-        update_aliens(aliens,ai_settings)
+            update_bullets(bullets,aliens)
+            update_aliens(aliens,ai_settings,ship,stats,bullets)
         update_screen(screen,ai_settings,ship,bullets,aliens)
 
 run_game() 
