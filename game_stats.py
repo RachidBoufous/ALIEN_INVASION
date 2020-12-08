@@ -5,7 +5,7 @@ class Game_Stats():
 
         self.settings = settings
         self.reset_stats()
-        self.game_active = True
+        self.game_active = False
     
 
     def reset_stats(self):

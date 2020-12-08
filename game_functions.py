@@ -9,11 +9,12 @@ from time import sleep
 
 # ? key binding settings
 
-def check_events(ship,settings,bullets,screen,stats):
+def check_events(ship,settings,bullets,screen,stats,play_button,aliens):
 
     for event in pygame.event.get():
         check_keydown(event,ship,settings,bullets,screen,stats)
         check_keyup(event,ship)
+        mouse_events(event,stats,play_button,aliens,bullets,ship)
 
 
 
@@ -45,9 +46,18 @@ def check_keyup(event,ship):
                 elif event.key == pygame.K_LEFT:
                     ship.moving_left = False
 
+
+def mouse_events(event,stats,play_button,aliens,bullets,ship):
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            print("play clicked")
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship)
+
 # ? screen updates
 
-def update_screen(screen,ai_settings,ship,bullets,aliens):
+def update_screen(screen,ai_settings,ship,bullets,
+                  aliens,stats,play_game):
 
     screen.fill(ai_settings.bg_color)
     ship.blitme()
@@ -55,6 +65,8 @@ def update_screen(screen,ai_settings,ship,bullets,aliens):
     fire_bullets(bullets)
     remove_old_bullets(bullets)
     aliens.draw(screen)
+    if not stats.game_active:
+        play_game.draw_button()
     pygame.display.flip()
 
 
@@ -152,10 +164,7 @@ def ship_hit(stats,aliens,bullets,ship):
     if stats.ship_left > 0:
         stats.ship_left -= 1
 
-        aliens.empty()
-        bullets.empty()
-
-        ship.center_ship()
+        reset_stats(aliens,bullets,ship)
 
         sleep(1)
     else:
@@ -168,3 +177,17 @@ def check_alien_bottom_collision(aliens,stats,bullets,ship):
         if alien.rect.bottom >= ship.screen_rect.bottom:
             ship_hit(stats,aliens,bullets,ship)
             break
+
+def reset_stats(aliens,bullets,ship):
+    aliens.empty()
+    bullets.empty()
+    ship.center_ship()
+
+# ? react to play button 
+
+def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship):
+
+    if play_button.rect.collidepoint(mouse_x,mouse_y):
+        stats.game_active = True
+        stats.reset_stats()
+        reset_stats(aliens,bullets,ship)
