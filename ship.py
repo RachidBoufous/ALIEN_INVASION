@@ -32,7 +32,7 @@ class Ship():
 
         # speed factor of the ship
         self.speed_factor = self.settings.ship_speed_factor
-        self.x = float(self.rect.x)
+        self.x = float(self.rect.centerx)
 
 
     def update(self):
@@ -44,7 +44,7 @@ class Ship():
         if self.moving_left and self.rect.left > self.screen_rect.left:
              self.x -= self.speed_factor
 
-        self.rect.x = self.x
+        self.rect.centerx = self.x
 
     def blitme(self):
         """draw the ship on screen surface
