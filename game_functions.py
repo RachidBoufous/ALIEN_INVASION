@@ -50,7 +50,6 @@ def check_keyup(event,ship):
 def mouse_events(event,stats,play_button,aliens,bullets,ship):
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            print("play clicked")
             mouse_x, mouse_y = pygame.mouse.get_pos()
             check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship)
 
@@ -85,12 +84,14 @@ def remove_old_bullets(bullets):
 def update_bullets(bullets,aliens):
     bullets.update()
     collisions = pygame.sprite.groupcollide(bullets,aliens,True,True)
+    print(collisions)
 
 
 
 # ? alien fleet creation
 
 def create_fleet(screen,settings,aliens,ship):
+    
     if len(aliens) == 0:
         image_dict = settings.images
         image = image_dict[randint(1,4)]
@@ -164,9 +165,11 @@ def ship_hit(stats,aliens,bullets,ship):
     if stats.ship_left > 0:
         stats.ship_left -= 1
 
-        reset_stats(aliens,bullets,ship)
+        ship.center_ship()
+        aliens.empty()
+        bullets.empty()
 
-        sleep(1)
+        sleep(0.5)
     else:
         stats.game_active = False
 
@@ -178,16 +181,13 @@ def check_alien_bottom_collision(aliens,stats,bullets,ship):
             ship_hit(stats,aliens,bullets,ship)
             break
 
-def reset_stats(aliens,bullets,ship):
-    aliens.empty()
-    bullets.empty()
-    ship.center_ship()
 
 # ? react to play button 
 
 def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship):
 
-    if play_button.rect.collidepoint(mouse_x,mouse_y):
+    button_clicked_flag = play_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked_flag and not stats.game_active:
         stats.game_active = True
         stats.reset_stats()
-        reset_stats(aliens,bullets,ship)
+        
