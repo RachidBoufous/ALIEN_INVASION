@@ -84,8 +84,7 @@ def remove_old_bullets(bullets):
 def update_bullets(bullets,aliens):
     bullets.update()
     collisions = pygame.sprite.groupcollide(bullets,aliens,True,True)
-    print(collisions)
-
+    
 
 
 # ? alien fleet creation
