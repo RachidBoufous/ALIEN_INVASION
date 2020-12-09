@@ -32,6 +32,7 @@ class Ship():
 
         # speed factor of the ship
         self.speed_factor = self.settings.ship_speed_factor
+        
         self.x = float(self.rect.centerx)
 
 

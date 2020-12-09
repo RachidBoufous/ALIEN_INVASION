@@ -189,4 +189,5 @@ def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship):
     if button_clicked_flag and not stats.game_active:
         stats.game_active = True
         stats.reset_stats()
+        pygame.mouse.set_visible(False)
         
