@@ -7,7 +7,8 @@ from game_functions import (check_events,
                             update_screen,
                             create_fleet,
                             update_bullets,
-                            update_aliens)
+                            update_aliens,
+                            )
 from pygame.sprite import  Group
 from game_stats import Game_Stats
 from button import Button
@@ -40,9 +41,9 @@ def run_game():
         check_events(ship,ai_settings,bullets,screen,stats,play_button,aliens)
 
         if stats.game_active:
-
+            print(len(bullets))
             create_fleet(screen,ai_settings,aliens,ship)
-            update_bullets(bullets,aliens)
+            update_bullets(bullets,aliens,screen,ai_settings,ship)
             update_aliens(aliens,ai_settings,ship,stats,bullets)
 
 

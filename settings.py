@@ -13,7 +13,7 @@ class Settings():
         self.bg_color = (31,31,31)
 
         # ? player ship settings
-        self.ship_speed_factor = 3
+        
         self.images = {
             1 : "images/alien1.png",
             2 : "images/alien2.png",
@@ -23,10 +23,26 @@ class Settings():
         self.ship_limit = 3
 
         # ? bullets settings
-        self.bullet_speed_factor = 2
+        
         self.bullets_allowed = 5
 
         # ? alien fleet/ships settings
-        self.alien_speed_factor = 1
-        self.fleet_direction = 1
-        self.fleet_drop_speed = 50
+        
+        self.fleet_drop_speed = 10
+
+        # ? game_speed scale
+        self.speed_up_scale = 1.5
+
+        self.re_init_dynamic_settings()
+            
+    def re_init_dynamic_settings(self):
+
+        self.ship_speed_factor = 3 ##
+        self.bullet_speed_factor = 2 ##
+        self.alien_speed_factor = 1 ##
+        self.fleet_direction = 1 ##
+
+    def increase_speed(self):
+        self.ship_speed_factor  *= self.speed_up_scale
+        self.bullet_speed_factor  *= self.speed_up_scale
+        self.alien_speed_factor *= self.speed_up_scale
