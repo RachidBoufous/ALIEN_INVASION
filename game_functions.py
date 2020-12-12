@@ -113,7 +113,8 @@ def check_bullet_alien_collisions(bullets,aliens,screen,settings,ship,stats,sb):
         settings.increase_speed()
         create_fleet(screen,settings,aliens,ship)
     if collisions:
-        stats.score += settings.alien_points
+        for alien in collisions.values():
+            stats.score += settings.alien_points
         sb.prep_score()
 
 
