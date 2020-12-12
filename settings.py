@@ -34,7 +34,7 @@ class Settings():
         self.speed_up_scale = 1.1
 
         # game score scale
-        self.score_scale = 1.3
+        self.score_scale = 1.5
 
 
         self.re_init_dynamic_settings()
