@@ -113,6 +113,9 @@ def check_bullet_alien_collisions(bullets,aliens,screen,settings,ship,stats,sb):
         bullets.empty()
         settings.increase_speed()
         create_fleet(screen,settings,aliens,ship)
+        stats.level +=1
+        sb.prep_level()
+
     if collisions:
         for alien in collisions.values():
             stats.score += settings.alien_points
@@ -229,6 +232,7 @@ def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship,sett
         settings.re_init_dynamic_settings()
         pygame.mouse.set_visible(False)
         sb.prep_score()
+        sb.prep_level()
 
 
 def check_high_score(stats,sb):

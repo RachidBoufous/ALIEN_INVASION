@@ -17,7 +17,7 @@ class Scoreboard():
 
         self.prep_score()
         self.prep_high_score()
-
+        self.prep_level()
     
     def prep_score(self):
         rounded_score = int(round(self.stats.score,-1))
@@ -45,8 +45,15 @@ class Scoreboard():
         self.sh_rect.right = self.screen_rect.right - 20
         self.sh_rect.top = 20
     
-
-
+    def prep_level(self):
+        level = "lvl: " + str(self.stats.level)
+        self.lvl_img = self.font.render(level,True,self.txt_color,self.bg_color)
+        
+        self.lvl_rect =self.lvl_img.get_rect()
+        self.lvl_rect.left = self.screen_rect.left + 20
+        self.lvl_rect.top = 20
+    
     def draw_score(self):
         self.screen.blit(self.score_img,self.score_rect)
         self.screen.blit(self.sh_img,self.sh_rect)
+        self.screen.blit(self.lvl_img,self.lvl_rect)
