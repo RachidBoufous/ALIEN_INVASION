@@ -65,21 +65,26 @@ def mouse_events(event,stats,play_button,aliens,bullets,ship,settings):
 # ? screen updates
 
 def update_screen(screen,ai_settings,ship,bullets,
-                  aliens,stats,play_game):
+                  aliens,stats,play_game,sb):
 
     screen.fill(ai_settings.bg_color)
 
-    ship.blitme()
-    ship.update()
-
-    remove_old_bullets(bullets)
-    fire_bullets(bullets)
-
-    aliens.draw(screen)
 
     if not stats.game_active:
         play_game.draw_button()
 
+    else:
+
+        ship.blitme()
+        ship.update()
+
+        remove_old_bullets(bullets)
+        fire_bullets(bullets)
+
+        aliens.draw(screen)
+
+        sb.draw_score() 
+    
     pygame.display.flip()
 
 
@@ -96,17 +101,20 @@ def remove_old_bullets(bullets):
             bullets.remove(bullet)
    
 
-def update_bullets(bullets,aliens,screen,settings,ship):
+def update_bullets(bullets,aliens,screen,settings,ship,stats,sb):
     bullets.update()
-    check_bullet_alien_collisions(bullets,aliens,screen,settings,ship)
+    check_bullet_alien_collisions(bullets,aliens,screen,settings,ship,stats,sb)
 
-def check_bullet_alien_collisions(bullets,aliens,screen,settings,ship):
+def check_bullet_alien_collisions(bullets,aliens,screen,settings,ship,stats,sb):
 
     collisions = pygame.sprite.groupcollide(bullets,aliens,True,True)
     if len(aliens) == 0:
         bullets.empty()
         settings.increase_speed()
         create_fleet(screen,settings,aliens,ship)
+    if collisions:
+        stats.score += settings.alien_points
+        sb.prep_score()
 
 
 
