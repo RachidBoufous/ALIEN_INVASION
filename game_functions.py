@@ -9,12 +9,12 @@ from time import sleep
 
 # ? key binding settings
 
-def check_events(ship,settings,bullets,screen,stats,play_button,aliens):
+def check_events(ship,settings,bullets,screen,stats,play_button,aliens,sb):
 
     for event in pygame.event.get():
         check_keydown(event,ship,settings,bullets,screen,stats)
         check_keyup(event,ship)
-        mouse_events(event,stats,play_button,aliens,bullets,ship,settings)
+        mouse_events(event,stats,play_button,aliens,bullets,ship,settings,sb)
 
 
 
@@ -50,11 +50,11 @@ def check_keyup(event,ship):
 
 
 
-def mouse_events(event,stats,play_button,aliens,bullets,ship,settings):
+def mouse_events(event,stats,play_button,aliens,bullets,ship,settings,sb):
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship,settings)
+            check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship,settings,sb)
 
 
 
@@ -83,7 +83,8 @@ def update_screen(screen,ai_settings,ship,bullets,
 
         aliens.draw(screen)
 
-        sb.draw_score() 
+        sb.draw_score()
+
     
     pygame.display.flip()
 
@@ -116,6 +117,7 @@ def check_bullet_alien_collisions(bullets,aliens,screen,settings,ship,stats,sb):
         for alien in collisions.values():
             stats.score += settings.alien_points
         sb.prep_score()
+        check_high_score(stats,sb)
 
 
 
@@ -204,6 +206,7 @@ def ship_hit(stats,aliens,bullets,ship):
         sleep(0.5)
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
 
 
 
@@ -216,7 +219,7 @@ def check_alien_bottom_collision(aliens,stats,bullets,ship):
 
 # ? react to play button 
 
-def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship,settings):
+def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship,settings,sb):
 
     button_clicked_flag = play_button.rect.collidepoint(mouse_x, mouse_y)
 
@@ -225,4 +228,10 @@ def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship,sett
         stats.reset_stats()
         settings.re_init_dynamic_settings()
         pygame.mouse.set_visible(False)
-        
+        sb.prep_score()
+
+
+def check_high_score(stats,sb):
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        sb.prep_high_score()

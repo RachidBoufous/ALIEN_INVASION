@@ -39,7 +39,7 @@ def run_game():
 
     while True:
 
-        check_events(ship,ai_settings,bullets,screen,stats,play_button,aliens)
+        check_events(ship,ai_settings,bullets,screen,stats,play_button,aliens,sb)
 
         if stats.game_active:
 
