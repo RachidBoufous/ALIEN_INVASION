@@ -245,6 +245,18 @@ def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship,sett
 
 
 def check_high_score(stats,sb):
+     
     if stats.score > stats.high_score:
         stats.high_score = stats.score
+        write_high_score(stats)
         sb.prep_high_score()
+
+
+def write_high_score(stats):
+    try:
+        str_hs = str(stats.high_score)
+        with open("game_files/high_score.txt","w") as file_obj:
+            file_obj.write(str_hs)
+        
+    except FileNotFoundError:
+        print("file not found")
