@@ -1,6 +1,6 @@
 import pygame
-
-class Ship():
+from pygame.sprite import Sprite
+class Ship(Sprite):
     """class that module the ship
     """
 
@@ -11,7 +11,7 @@ class Ship():
             screen (surface): main game's surface
             ai_settings (class): main game's settings
         """
-
+        super().__init__()
         self.settings = ai_settings
         # load the screen surface and the ship image.
         self.screen = screen
@@ -23,7 +23,7 @@ class Ship():
 
         # place the ship at the center bottom of the screen surface 
         self.rect.centerx = self.screen_rect.centerx
-        self.rect.bottom = self.screen_rect.bottom
+        self.rect.bottom = self.screen_rect.bottom - 25
 
 
         # allow continuouse movement when holding left-right keys

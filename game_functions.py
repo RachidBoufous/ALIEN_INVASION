@@ -187,20 +187,22 @@ def change_fleet_direction(aliens,settings):
     settings.fleet_direction *= -1
 
 
-def update_aliens(aliens,settings,ship, stats,bullets):
+def update_aliens(aliens,settings,ship, stats,bullets,sb):
     check_fleet_edges(aliens,settings)
     aliens.update()
 
     if pygame.sprite.spritecollideany(ship,aliens):
-        ship_hit(stats,aliens,bullets,ship)
+        ship_hit(stats,aliens,bullets,ship,sb)
     
-    check_alien_bottom_collision(aliens,stats,bullets,ship)
+    check_alien_bottom_collision(aliens,stats,bullets,ship,sb)
         
 
 
-def ship_hit(stats,aliens,bullets,ship):
-    if stats.ship_left > 0:
+def ship_hit(stats,aliens,bullets,ship,sb):
+    if stats.ship_left > 1:
         stats.ship_left -= 1
+
+        sb.prep_ships_left()
 
         ship.center_ship()
         aliens.empty()
@@ -210,13 +212,15 @@ def ship_hit(stats,aliens,bullets,ship):
     else:
         stats.game_active = False
         pygame.mouse.set_visible(True)
+        stats.reset_stats()
 
 
 
-def check_alien_bottom_collision(aliens,stats,bullets,ship):
+def check_alien_bottom_collision(aliens,stats,bullets,ship,sb):
     for alien in aliens.sprites():
         if alien.rect.bottom >= ship.screen_rect.bottom:
-            ship_hit(stats,aliens,bullets,ship)
+            ship_hit(stats,aliens,bullets,ship,sb)
+            sb.prep_ships_left()
             break
 
 
@@ -233,6 +237,7 @@ def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship,sett
         pygame.mouse.set_visible(False)
         sb.prep_score()
         sb.prep_level()
+        sb.prep_ships_left()
 
 
 def check_high_score(stats,sb):

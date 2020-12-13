@@ -45,7 +45,7 @@ def run_game():
 
             create_fleet(screen,ai_settings,aliens,ship)
             update_bullets(bullets,aliens,screen,ai_settings,ship,stats,sb)
-            update_aliens(aliens,ai_settings,ship,stats,bullets)
+            update_aliens(aliens,ai_settings,ship,stats,bullets,sb)
 
 
         update_screen(screen,ai_settings,ship,bullets,aliens,stats,play_button,sb)
