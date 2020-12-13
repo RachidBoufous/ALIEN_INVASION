@@ -28,7 +28,7 @@ class Settings():
 
         # ? alien fleet/ships settings
         
-        self.fleet_drop_speed = 10
+        self.fleet_drop_speed = 60
 
         # ? game_speed scale
         self.speed_up_scale = 1.1

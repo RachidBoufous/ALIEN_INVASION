@@ -199,20 +199,24 @@ def update_aliens(aliens,settings,ship, stats,bullets,sb):
 
 
 def ship_hit(stats,aliens,bullets,ship,sb):
-    if stats.ship_left > 1:
+    if stats.ship_left >= 1:
+        
         stats.ship_left -= 1
 
-        sb.prep_ships_left()
 
         ship.center_ship()
         aliens.empty()
         bullets.empty()
 
         sleep(0.5)
+        sb.prep_ships_left()
+        
     else:
         stats.game_active = False
         pygame.mouse.set_visible(True)
+
         stats.reset_stats()
+        aliens.empty()
 
 
 
@@ -231,8 +235,8 @@ def check_play_button(stats,play_button,mouse_x,mouse_y,aliens,bullets,ship,sett
     button_clicked_flag = play_button.rect.collidepoint(mouse_x, mouse_y)
 
     if button_clicked_flag and not stats.game_active:
-        stats.game_active = True
         stats.reset_stats()
+        stats.game_active = True
         settings.re_init_dynamic_settings()
         pygame.mouse.set_visible(False)
         sb.prep_score()
